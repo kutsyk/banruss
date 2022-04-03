@@ -23,6 +23,7 @@
           <th scope="col">Image</th>
           <th scope="col">Name</th>
           <th scope="col">Button</th>
+          <th scope="col">Brands 💼</th>
         </tr>
       </thead>
       <tbody>
@@ -36,21 +37,50 @@
             {{name}}
           </td>
           <td>
-            <a class="btn btn-primary" href="/ai?imageName={{name}}">Get data</button>
+            <button class="btn btn-primary" imageName="{{name}}" onclick="getBrands('{{name}}')">Get Brands
+              🕵️‍♀️</button>
           </td>
-          <td></td>
+          <td>
+            <div id="loading-{{name}}" style="visibility: hidden;" class="spinner-border text-primary" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <div id="results-{{name}}">
+              <div class="list-group" id="results-list-{{name}}">
+              </div>
+            </div>
+          </td>
         </tr>
         {{/each}}
-      </tbody>ß
+      </tbody>
     </table>
   </div>
 </div>
 
 
 
-
-
 <script>
+  function getBrands(imageName) {
+    console.log(imageName);
+    let getLoaderEl = document.getElementById(`loading-${imageName}`);
+    let getResultsEl = document.getElementById(`results-${imageName}`);
+    let getResultsListsEl = document.getElementById(`results-list-${imageName}`);
+
+    getLoaderEl.style.visibility = 'visible';
+
+    $.get(`/ai?imageName=${imageName}`, function (data, status) {
+      console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+      let brands = data.brands;
+      getLoaderEl.style.visibility = 'hidden';
+
+      for (let i = 0; i < brands.length; i++) {
+        getResultsListsEl.innerHTML += `<a href="#" class="list-group-item list-group-item-action">
+    ${brands[i].name}
+  </a>`;
+      }
+      console.log("Data: " + JSON.stringify(brands));
+    });
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
 
     const message = document.getElementById('message');

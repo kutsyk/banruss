@@ -50,11 +50,8 @@ router.get('/', async (req, res, next) => {
     //         console.log(`    ${brand.name} (${brand.confidence.toFixed(2)} confidence)`);
     //     }
     // } else { console.log(`No brands found.`); }
-
-    res.render('ai', {
-        message: JSON.stringify(brands, null, 4)+"",
-        brandURLImage: brandURLImage
-    });
+    res.setHeader('Content-Type', 'application/json');
+    res.send(brands);
 });
 
 module.exports = router;
