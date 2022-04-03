@@ -1,21 +1,54 @@
-<h1>Image Resizer</h1>
+<div class="px-4 py-5 my-5 text-center">
+  <div class="col-lg-6 mx-auto">
+    <h2 class="display-5 fw-bold">Upload photos</h2>
 
-<h2>Upload photos</h2>
-<form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
-  <h2>Select an image to upload:</h2>
-  <div class="upload-container"><input id="file-picker" type="file" name="image"></div>
-  <div><input type="submit" value="Upload Image"></div>
-</form>
+    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data" class="text-center">
+      <h2>Select an image to upload:</h2>
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Default file input example</label>
+        <input class="form-control" id="file-picker" type="file" name="image">
+      </div>
 
-<p id="message">{{message}}</p>
+      <div class="mb-3"><input type="submit" class="btn btn-primary btn-lg px-4 gap-3" value="Upload Image"></div>
+    </form>
 
-<h2>Generated Thumbnails</h2>
-{{#each this.thumbnails}}
-  <img src="https://{{../accountName}}.blob.core.windows.net/{{../containerName}}/{{name}}">
-{{/each}}
 
-<hr>
-<p>This app has no official privacy policy. Your data will be uploaded to a service in order to produce a thumbnail. Your images will be public once you upload them and there is no automated way to remove them.</p>
+    <p id="message">{{message}}</p>
+  </div>
+  <div class="col mx-auto">
+    <h2>Generated Thumbnails</h2>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Name</th>
+          <th scope="col">Button</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.thumbnails}}
+        <tr>
+          <td>
+            <img class="img-thumbnail img-fluid"
+              src="https://{{../accountName}}.blob.core.windows.net/{{../containerName}}/{{name}}" width="200px">
+          </td>
+          <td>
+            {{name}}
+          </td>
+          <td>
+            <a class="btn btn-primary" href="/ai?imageName={{name}}">Get data</button>
+          </td>
+          <td></td>
+        </tr>
+        {{/each}}
+      </tbody>ß
+    </table>
+  </div>
+</div>
+
+
+
+
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -27,8 +60,8 @@
 
       message.innerText = '';
 
-      if(!picker.files.length) {
-        message.innerText = 'Please select an image to upload.';
+      if (!picker.files.length) {
+        message.innerHTML = '<snap style="color: red;">Please select an image to upload.</snap>';
         e.preventDefault();
         return false;
       }

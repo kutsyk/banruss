@@ -7,7 +7,7 @@ const
     , router = express.Router()
     , { BlobServiceClient } = require("@azure/storage-blob")
     , blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING)
-    , containerName = 'thumbnails'
+    , containerName = 'photos'
     , config = require('../config')
 ;
 

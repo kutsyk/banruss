@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const
-      express = require('express')
+    express = require('express')
     , router = express.Router()
 
     , multer = require('multer')
@@ -12,8 +12,8 @@ const
 
     , { BlockBlobClient } = require('@azure/storage-blob')
     , getStream = require('into-stream')
-    , containerName = 'images'
-;
+    , containerName = 'photos'
+    ;
 
 const handleError = (err, res) => {
     res.status(500);
@@ -28,26 +28,26 @@ const getBlobName = originalName => {
 router.post('/', uploadStrategy, (req, res) => {
 
     const
-          blobName = getBlobName(req.file.originalname)
-        , blobService = new BlockBlobClient(process.env.AZURE_STORAGE_CONNECTION_STRING,containerName,blobName)
+        blobName = getBlobName(req.file.originalname)
+        , blobService = new BlockBlobClient(process.env.AZURE_STORAGE_CONNECTION_STRING, containerName, blobName)
         , stream = getStream(req.file.buffer)
         , streamLength = req.file.buffer.length
-    ;
+        ;
 
     blobService.uploadStream(stream, streamLength)
-    .then(
-        ()=>{
-            res.render('success', { 
-                message: 'File uploaded to Azure Blob storage.' 
-            });
-        }
-    ).catch(
-        (err)=>{
-        if(err) {
-            handleError(err);
-            return;
-        }
-    })
+        .then(
+            () => {
+                res.render('success', {
+                    message: 'File uploaded to Azure Blob storage.'
+                });
+            }
+        ).catch(
+            (err) => {
+                if (err) {
+                    handleError(err);
+                    return;
+                }
+            })
 });
 
 module.exports = router;
