@@ -51,8 +51,9 @@ router.get('/', async (req, res, next) => {
     //     }
     // } else { console.log(`No brands found.`); }
 
-    res.render('success', {
-        message: JSON.stringify(brands, null, 4)
+    res.render('ai', {
+        message: JSON.stringify(brands, null, 4)+"",
+        brandURLImage: brandURLImage
     });
 });
 
